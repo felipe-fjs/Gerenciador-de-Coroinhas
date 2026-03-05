@@ -1,4 +1,4 @@
-package com.felipejoaquim.Gerenciador.de.Coroinhas;
+package com.felipejoaquim.gerenciador_de_coroinhas;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
