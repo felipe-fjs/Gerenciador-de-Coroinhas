@@ -48,14 +48,13 @@ public class Perfil implements Serializable {
 
     public Perfil(){}
 
-    public Perfil(Integer id, String nome, LocalDate dataNascimento, String telefone, String imgUrl, Usuario usuario, Set<PerfilFuncao> funcoes) {
+    public Perfil(Integer id, String nome, LocalDate dataNascimento, String telefone, String imgUrl, Usuario usuario) {
         this.id = id;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.telefone = telefone;
         this.imgUrl = imgUrl;
         this.usuario = usuario;
-        this.funcoes = funcoes;
     }
 
     public Integer getId() {
@@ -66,19 +65,19 @@ public class Perfil implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
+    public String getNome() {
         return nome;
     }
 
-    public void setName(String nome) {
+    public void setNome(String nome) {
         this.nome = nome;
     }
     
-    public LocalDate getBirth_date() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setBirth_date(LocalDate dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
     
