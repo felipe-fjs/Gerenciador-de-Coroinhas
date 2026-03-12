@@ -16,31 +16,42 @@ public class UsuarioService {
     }
 
     public String novoUsuario(Usuario usuario) {
-        // verificar existencia de email no DB
-        // criptografar senha
-        // ... algo mais?
-        // salvar
-        // retornar o id do usuário criado
-        return null;
+        if (!this.emailCadastrado(usuario.getEmail())) {
+            String senhaCriptograda = usuario.getSenha(); // criptografar
+            usuario.setSenha(senhaCriptograda);
+            try {
+                String id = usuarioRepository.save(usuario).getId();
+                return id;
+            } catch (RuntimeException e) {
+                throw new RuntimeException("Erro ao registrar novo usuário - UsuarioService");
+            }
+        }
+        throw new RuntimeException("Usuário já cadastrado - UsuarioService");
     }
 
-    public void editarUsuario(Integer usuarioId, Usuario usuarioAtualizado) {
-
+    public void editarUsuario(String usuarioId, Usuario usuarioAtualizado) {
+        // instanciar posteriormente (verificação talvez?)
     }
 
-    public void desativarusuario(Integer usuarioId) {
+    public void desativarUsuario(String usuarioId) {
+        if (usuarioRepository.existsById(usuarioId)) {
+            Usuario usuario = usuarioRepository.findById(usuarioId).get();
+            usuario.setAtivo(false);
+            try {
+                usuarioRepository.save(usuario);
+            } catch (RuntimeException e ) {
+                throw new RuntimeException("Erro ao desativar um usuário - UsuarioService");
+            }
+        }
 
+        throw new RuntimeException("Erro ao verificar existencia de um usuário - UsuarioService");
     }
 
     public Boolean emailCadastrado(String email){ 
-        return null;
+        return usuarioRepository.existsByEmail(email);
     }
 
     public Boolean usuarioAtivo(String email) {
-        if (this.emailCadastrado(email)) {
-            // fazer lógica
-        }
-        
-        return false;
+        return usuarioRepository.existsByEmailAndAtivoTrue(email);
     }
 } 
