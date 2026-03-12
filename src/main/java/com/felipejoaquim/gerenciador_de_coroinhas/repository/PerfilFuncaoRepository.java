@@ -6,7 +6,7 @@ import com.felipejoaquim.gerenciador_de_coroinhas.entity.Comunidade;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Perfil;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.PerfilFuncao;
 import java.util.List;
-import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Funcoes;
+import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Roles;
 
 
 
@@ -14,18 +14,18 @@ public interface PerfilFuncaoRepository extends JpaRepository<PerfilFuncao, Inte
     List<PerfilFuncao> findByPerfil(Perfil profile);
 
     List<PerfilFuncao> findByComunidade(Comunidade comunidade);
-    List<PerfilFuncao> findByComunidadeAndFuncao(Comunidade comunidade, Funcoes role);
+    List<PerfilFuncao> findByComunidadeAndFuncao(Comunidade comunidade, Roles role);
 
-
+    
     List<PerfilFuncao> findByPerfilAndComunidade(Perfil profile, Comunidade comunidade);
-    boolean existsByPerfilAndComunidadeAndFuncao(Perfil profile, Comunidade comunidade, Funcoes role);
+    boolean existsByPerfilAndComunidadeAndFuncao(Perfil profile, Comunidade comunidade, Roles role);
 
     List<PerfilFuncao> findByPerfilAndActiveTrue(Perfil profile);
     List<PerfilFuncao> findByComunidadeAndActiveTrue(Comunidade comunidade);
-    List<PerfilFuncao> findByComunidadeAndFuncaoAndActiveTrue(Comunidade comunidade, Funcoes role);
+    List<PerfilFuncao> findByComunidadeAndFuncaoAndActiveTrue(Comunidade comunidade, Roles role);
 
     long countByComunidade(Comunidade comunidade);
-    long countByFuncao(Funcoes role);
-    long countByComunidadeAndFuncao(Comunidade comunidade, Funcoes role);
+    long countByFuncao(Roles role);
+    long countByComunidadeAndFuncao(Comunidade comunidade, Roles role);
 
 }

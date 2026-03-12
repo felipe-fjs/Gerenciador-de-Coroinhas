@@ -1,6 +1,6 @@
 package com.felipejoaquim.gerenciador_de_coroinhas.entity.enums;
 
-public enum Funcoes {
+public enum Roles {
     ROLE_CONTROL_MASTER("Admin Global"),
     ROLE_COORDENADOR("Coordenador"),
     ROLE_ARTICULADOR("Articulador"),
@@ -9,7 +9,7 @@ public enum Funcoes {
 
     private final String descricao;
 
-    Funcoes(String descricao) {
+    Roles(String descricao) {
         this.descricao = descricao;
     }
     

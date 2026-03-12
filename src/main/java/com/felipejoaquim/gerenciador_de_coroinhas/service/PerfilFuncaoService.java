@@ -3,7 +3,7 @@ package com.felipejoaquim.gerenciador_de_coroinhas.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Funcoes;
+import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Roles;
 import com.felipejoaquim.gerenciador_de_coroinhas.repository.PerfilFuncaoRepository;
 import com.felipejoaquim.gerenciador_de_coroinhas.repository.PerfilRepository;
 
@@ -50,7 +50,7 @@ public class PerfilFuncaoService {
 
     }
 
-    public Boolean perfilTemFuncaoAtiva(Integer perfilId, Funcoes funcao) {
+    public Boolean perfilTemFuncaoAtiva(Integer perfilId, Roles funcao) {
         // verificar se registro existe e se está ativo
         return null;
     }

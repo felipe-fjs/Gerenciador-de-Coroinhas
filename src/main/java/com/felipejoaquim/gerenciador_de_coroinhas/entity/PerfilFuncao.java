@@ -2,7 +2,7 @@ package com.felipejoaquim.gerenciador_de_coroinhas.entity;
 
 import java.io.Serializable;
 
-import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Funcoes;
+import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Roles;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,13 +38,13 @@ public class PerfilFuncao implements Serializable{
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Funcoes funcao;
+    private Roles funcao;
     
     private Boolean active = true; // define se o usario_funcao está ativo
 
     public PerfilFuncao(){}
 
-    public PerfilFuncao(Integer id, Perfil perfil, Comunidade comunidade, Funcoes funcao) {
+    public PerfilFuncao(Integer id, Perfil perfil, Comunidade comunidade, Roles funcao) {
         this.id = id;
         this.perfil = perfil;
         this.comunidade = comunidade;
@@ -75,11 +75,11 @@ public class PerfilFuncao implements Serializable{
         this.comunidade = comunidade;
     }
 
-    public Funcoes getFuncao() {
+    public Roles getFuncao() {
         return funcao;
     }
 
-    public void setFuncao(Funcoes funcao) {
+    public void setFuncao(Roles funcao) {
         this.funcao = funcao;
     }
 
