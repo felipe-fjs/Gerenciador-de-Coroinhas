@@ -50,12 +50,12 @@ public class PerfilFuncaoService {
 
     }
 
-    public Boolean perfilTemFuncaoAtiva(String email, Funcoes funcao) {
+    public Boolean perfilTemFuncaoAtiva(Integer perfilId, Funcoes funcao) {
         // verificar se registro existe e se está ativo
         return null;
     }
 
-    public Boolean perfilAtuaNaComunidade(String email, String ComunidadeId) {
+    public Boolean perfilAtuaNaComunidade(Integer perfilId, Integer ComunidadeId) {
         return null;
     }
 }
