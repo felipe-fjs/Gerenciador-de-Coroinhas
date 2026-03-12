@@ -40,7 +40,7 @@ public class PerfilFuncao implements Serializable{
     @Column(nullable = false)
     private Roles funcao;
     
-    private Boolean active = true; // define se o usario_funcao está ativo
+    private Boolean ativo = true; // define se o usario_funcao está ativo
 
     public PerfilFuncao(){}
 
@@ -83,12 +83,12 @@ public class PerfilFuncao implements Serializable{
         this.funcao = funcao;
     }
 
-    public Boolean getActive() {
-        return active;
+    public Boolean getAtivo() {
+        return ativo;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 
     @Override
@@ -118,7 +118,7 @@ public class PerfilFuncao implements Serializable{
 
     @Override
     public String toString() {
-        return "PerfilFuncao [id=" + id + ", funcao=" + funcao + ", active=" + active + "]";
+        return "PerfilFuncao [id=" + id + ", funcao=" + funcao + ", active=" + ativo + "]";
     } 
     
     

@@ -20,9 +20,9 @@ public interface PerfilFuncaoRepository extends JpaRepository<PerfilFuncao, Inte
     List<PerfilFuncao> findByPerfilAndComunidade(Perfil profile, Comunidade comunidade);
     boolean existsByPerfilAndComunidadeAndFuncao(Perfil profile, Comunidade comunidade, Roles role);
 
-    List<PerfilFuncao> findByPerfilAndActiveTrue(Perfil profile);
-    List<PerfilFuncao> findByComunidadeAndActiveTrue(Comunidade comunidade);
-    List<PerfilFuncao> findByComunidadeAndFuncaoAndActiveTrue(Comunidade comunidade, Roles role);
+    List<PerfilFuncao> findByPerfilAndAtivoTrue(Perfil profile);
+    List<PerfilFuncao> findByComunidadeAndAtivoTrue(Comunidade comunidade);
+    List<PerfilFuncao> findByComunidadeAndFuncaoAndAtivoTrue(Comunidade comunidade, Roles role);
 
     long countByComunidade(Comunidade comunidade);
     long countByFuncao(Roles role);
