@@ -11,18 +11,11 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public Usuario get_por_email(String email) {
-        if (this.email_cadastrado(email)){
-            if (this.usuario_ativo(email)) {
-                // econtrar usuário
-            
-            }
-        }
-
-        return null; // ou retornar exceção?
+    public Usuario buscarPorEmail(String email) {
+        return usuarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
     }
 
-    public String novo_usuario(Usuario usuario) {
+    public String novoUsuario(Usuario usuario) {
         // verificar existencia de email no DB
         // criptografar senha
         // ... algo mais?
@@ -31,20 +24,20 @@ public class UsuarioService {
         return null;
     }
 
-    public void editar_usuario(Integer usuario_id, Usuario usuario_atualizado) {
+    public void editarUsuario(Integer usuarioId, Usuario usuarioAtualizado) {
 
     }
 
-    public void desativar_usuario(Integer usuario_id) {
+    public void desativarusuario(Integer usuarioId) {
 
     }
 
-    public Boolean email_cadastrado(String email){ 
+    public Boolean emailCadastrado(String email){ 
         return null;
     }
 
-    public Boolean usuario_ativo(String email) {
-        if (this.email_cadastrado(email)) {
+    public Boolean usuarioAtivo(String email) {
+        if (this.emailCadastrado(email)) {
             // fazer lógica
         }
         
