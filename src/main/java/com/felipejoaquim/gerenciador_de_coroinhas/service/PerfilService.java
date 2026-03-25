@@ -33,7 +33,7 @@ public class PerfilService {
                     throw new RuntimeException("Erro ao salvar novo perfil - PerfilService");
                 }
         }
-        return null;
+        throw new RuntimeException("Usuario não encontrado - PerfilService");
     }
 
         // alterar para receber DTO
