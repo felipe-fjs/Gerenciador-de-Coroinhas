@@ -1,6 +1,7 @@
 package com.felipejoaquim.gerenciador_de_coroinhas.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Usuario;
@@ -10,20 +11,22 @@ import com.felipejoaquim.gerenciador_de_coroinhas.repository.UsuarioRepository;
 public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public Usuario buscarPorEmail(String email) {
-        return usuarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+        return usuarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Usuário não encontrado! - UsuarioService"));
     }
 
     public String novoUsuario(Usuario usuario) {
         if (!this.emailCadastrado(usuario.getEmail())) {
-            String senhaCriptograda = usuario.getSenha(); // criptografar
-            usuario.setSenha(senhaCriptograda);
             try {
+                String senhaCriptograda = passwordEncoder.encode(usuario.getSenha()); // criptografar
+                usuario.setSenha(senhaCriptograda);
                 String id = usuarioRepository.save(usuario).getId();
                 return id;
             } catch (RuntimeException e) {
-                throw new RuntimeException("Erro ao registrar novo usuário - UsuarioService");
+                throw new RuntimeException("Erro ao registrar novo usuário - UsuarioService : \n " + e);
             }
         }
         throw new RuntimeException("Usuário já cadastrado - UsuarioService");
