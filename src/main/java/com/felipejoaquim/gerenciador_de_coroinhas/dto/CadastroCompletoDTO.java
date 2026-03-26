@@ -6,7 +6,7 @@ import java.time.LocalDate;
 public record CadastroCompletoDTO(
                         String nome, 
                         String email,
-                        LocalDate dataNascmento,
+                        LocalDate dataNascimento,
                         String telefone,
                         String imgUrl, 
                         String usuarioId,
