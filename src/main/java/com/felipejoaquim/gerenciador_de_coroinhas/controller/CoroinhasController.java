@@ -83,3 +83,17 @@ public class CoroinhasController {
         }
     }
 
+    public ResponseEntity<?> coroinhasDaComunidade(@RequestBody ComunidadeDTO body){
+        try {
+            if (comunidadeService)
+            List<PerfilFuncaoDTO> coroinhasDTO = perfilFuncaoService.coroinhasdaComunidade(body.comunidade());
+            if (coroinhasDTO == null) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok().body(coroinhasDTO);
+
+        } catch (RuntimeException e ){
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+}
