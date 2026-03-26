@@ -1,5 +1,6 @@
 package com.felipejoaquim.gerenciador_de_coroinhas.controller;
 
+import java.net.URI;
 import java.time.Duration;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.felipejoaquim.gerenciador_de_coroinhas.dto.CadastroCompletoDTO;
+import com.felipejoaquim.gerenciador_de_coroinhas.dto.CadastroCompletoCreateDTO;
 import com.felipejoaquim.gerenciador_de_coroinhas.dto.LoginDTO;
+import com.felipejoaquim.gerenciador_de_coroinhas.entity.Perfil;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Usuario;
 import com.felipejoaquim.gerenciador_de_coroinhas.repository.UsuarioRepository;
 import com.felipejoaquim.gerenciador_de_coroinhas.security.TokenService;
@@ -36,9 +38,8 @@ public class AuthenticationController {
     
 
     @PostMapping("/registro")
-    public ResponseEntity<?> novoUsuario(@RequestBody CadastroCompletoDTO body){ 
+    public ResponseEntity<?> novoUsuario(@RequestBody CadastroCompletoCreateDTO body){ 
         if (usuarioService.emailCadastrado(body.email())){
-            System.out.println("Email registrado agora: " + body.email());
             return ResponseEntity.badRequest().body("Email já registrado!");
         }
 
@@ -46,18 +47,17 @@ public class AuthenticationController {
             Usuario novoUsuario = new Usuario(null, body.email(), body.senha(), null);
             String novoUsuarioId = usuarioService.novoUsuario(novoUsuario);
 
-            // Perfil novoPerfil = new Perfil(null, body.nome(), body.dataNascmento(), body.telefone(), body.imgUrl(), novoUsuario);
-            // perfilService.novoPerfil(novoUsuarioId, novoPerfil);
+            Perfil novoPerfil = new Perfil(null, body.nome(), body.dataNascimento(), body.telefone(), body.imgUrl(), novoUsuario);
+            Perfil perfil = perfilService.novoPerfil(novoUsuarioId, novoPerfil);
 
-            // novoUsuario.setPerfil(novoPerfil);
-            // usuarioRepository.save(novoUsuario);
+            novoUsuario.setPerfil(perfil);
+            usuarioRepository.save(novoUsuario);
             System.out.println("Email registrado agora: " + body.email());
 
-            // return ResponseEntity.created(URI.create("novoUsuarioId")).body("Email ["+ body.email()+"] cadastrado com sucesso!");
+            return ResponseEntity.created(URI.create("novoUsuarioId")).body("Email ["+ body.email()+"] cadastrado com sucesso!");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         }
-        return ResponseEntity.ok().body("Novo usuário ["+ body.email() +"] registrado com sucesso!");
     }
     
     @PostMapping("/login")
@@ -93,6 +93,6 @@ public class AuthenticationController {
 
         return ResponseEntity.ok()
                                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                                .body("logout com sucesso!");   
+                                .body("logout relizado com sucesso!");   
     }
 }
