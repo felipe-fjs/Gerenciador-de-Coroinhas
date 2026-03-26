@@ -1,10 +1,12 @@
 package com.felipejoaquim.gerenciador_de_coroinhas.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.felipejoaquim.gerenciador_de_coroinhas.dto.PerfilFuncaoDTO;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Comunidade;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.PerfilFuncao;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Roles;
@@ -48,6 +50,29 @@ public class ComunidadeService {
             return coroinhas;
         }
         throw new RuntimeException("Comunidade de ID = "+comunidadeId+" não encontrada!");
+    }
+
+    public List<PerfilFuncaoDTO> coroinhasDaComunidadeDTO(String comunidade) {
+        if (comunidadeRepository.existsByNome(comunidade)){
+            Comunidade comunidad = comunidadeRepository.findByNome(comunidade).get();
+
+            List<PerfilFuncao> coroinhas =  perfilFuncaoRepository.findByComunidadeAndFuncaoAndAtivoTrue(comunidad, Roles.ROLE_COROINHA);
+            if (!coroinhas.isEmpty()) {
+                List<PerfilFuncaoDTO> coroinhasDTO = new ArrayList<>();
+                for (PerfilFuncao perfilFuncao : coroinhas) {
+                    coroinhasDTO.add(new PerfilFuncaoDTO(
+                                            perfilFuncao.getPerfil().getId(),
+                                            perfilFuncao.getFuncao(),
+                                            perfilFuncao.getComunidade().getNome(),
+                                            perfilFuncao.getAtivo()
+                                        ));
+                }
+                return coroinhasDTO;
+            }
+            
+            return coroinhas;
+        }
+        throw new RuntimeException("Comunidade de ID = "+comunidade+" não encontrada!");
     }
 
     public List<PerfilFuncao> articuladoresDaComunidade(Integer comunidadeId) {
