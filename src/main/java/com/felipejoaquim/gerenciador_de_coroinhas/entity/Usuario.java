@@ -2,8 +2,12 @@ package com.felipejoaquim.gerenciador_de_coroinhas.entity;
 
 import java.io.Serializable;
 
+import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Roles;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,7 +36,17 @@ public class Usuario implements Serializable {
     private Boolean ativo = true;
     private Boolean verificado = false;
 
+    @Enumerated(EnumType.STRING)
+    private Roles funcao;
+
     public Usuario(){}
+
+    public Usuario(String id, String email, String senha, Roles funcao) {
+        this.id = id;
+        this.email = email;
+        this.senha = senha;
+        this.funcao = funcao;
+    }
 
     public Usuario(String id, String email, String senha, Perfil perfil) {
         this.id = id;
@@ -89,6 +103,14 @@ public class Usuario implements Serializable {
         this.verificado = verificado;
     }
 
+    public Roles getFuncao() {
+        return funcao;
+    }
+
+    public void setFuncao(Roles funcao) {
+        this.funcao = funcao;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -118,6 +140,4 @@ public class Usuario implements Serializable {
     public String toString() {
         return "Usuario [id=" + id + ", email=" + email + ", active=" + ativo + ", verified=" + verificado + "]";
     }
-
-    
 }

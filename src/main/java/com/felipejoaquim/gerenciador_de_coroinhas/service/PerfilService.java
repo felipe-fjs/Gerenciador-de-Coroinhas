@@ -16,7 +16,7 @@ public class PerfilService {
     private PerfilRepository perfilRepository;
 
         // atualizar para receber DTO
-    public Integer novoPerfil(String usuarioId, Perfil novoPerfil){
+    public Perfil novoPerfil(String usuarioId, Perfil novoPerfil){
         if (usuarioRepository.existsById(usuarioId)) {
             Usuario usuario = usuarioRepository.findById(usuarioId).get();
             Perfil perfil = new Perfil(
@@ -26,14 +26,33 @@ public class PerfilService {
                 novoPerfil.getTelefone(), 
                 novoPerfil.getImgUrl(), 
                 usuario);
-                try {
-                    Integer id = perfilRepository.save(perfil).getId();
-                    return id;
-                } catch (RuntimeException e) {
-                    throw new RuntimeException("Erro ao salvar novo perfil - PerfilService");
-                }
+                
+                Perfil perfilRegistrado = perfilRepository.save(perfil);
+                usuario.setPerfil(perfilRegistrado);
+                return perfilRegistrado;
+                // } catch (RuntimeException e) {
+                //     throw new RuntimeException("Erro ao salvar novo perfil - PerfilService");
+                // }
         }
         throw new RuntimeException("Usuario não encontrado - PerfilService");
+    }
+
+    public Perfil novoPerfil(Usuario usuario, Perfil novoPerfil){
+        
+        Perfil perfil = new Perfil(
+            null, 
+            novoPerfil.getNome(), 
+            novoPerfil.getDataNascimento(), 
+            novoPerfil.getTelefone(), 
+            novoPerfil.getImgUrl(), 
+            usuario);
+            
+            Perfil perfilRegistrado = perfilRepository.save(perfil);
+            usuario.setPerfil(perfilRegistrado);
+            return perfilRegistrado;
+            // } catch (RuntimeException e) {
+            //     throw new RuntimeException("Erro ao salvar novo perfil - PerfilService");
+            // }
     }
 
         // alterar para receber DTO

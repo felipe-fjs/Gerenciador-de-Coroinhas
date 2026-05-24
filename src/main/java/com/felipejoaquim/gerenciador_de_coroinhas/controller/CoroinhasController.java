@@ -1,5 +1,6 @@
 package com.felipejoaquim.gerenciador_de_coroinhas.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.felipejoaquim.gerenciador_de_coroinhas.dto.ComunidadeDTO;
 import com.felipejoaquim.gerenciador_de_coroinhas.dto.PerfilFuncaoDTO;
 import com.felipejoaquim.gerenciador_de_coroinhas.dto.coroinha.NovoCoroinhaUsuarioExistenteDTO;
+import com.felipejoaquim.gerenciador_de_coroinhas.entity.PerfilFuncao;
 import com.felipejoaquim.gerenciador_de_coroinhas.repository.PerfilFuncaoRepository;
 import com.felipejoaquim.gerenciador_de_coroinhas.repository.PerfilRepository;
 import com.felipejoaquim.gerenciador_de_coroinhas.service.ComunidadeService;
@@ -76,6 +78,7 @@ public class CoroinhasController {
             if (coroinhasDTO == null) {
                 return ResponseEntity.noContent().build();
             }
+            
             return ResponseEntity.ok().body(coroinhasDTO);
 
         } catch (RuntimeException e ){
@@ -85,15 +88,25 @@ public class CoroinhasController {
 
     public ResponseEntity<?> coroinhasDaComunidade(@RequestBody ComunidadeDTO body){
         try {
-            if (comunidadeService)
-            List<PerfilFuncaoDTO> coroinhasDTO = perfilFuncaoService.coroinhasdaComunidade(body.comunidade());
+            List<PerfilFuncaoDTO> coroinhasDTO = comunidadeService.coroinhasDaComunidadeDTO(body.comunidade());
             if (coroinhasDTO == null) {
                 return ResponseEntity.noContent().build();
             }
+
             return ResponseEntity.ok().body(coroinhasDTO);
 
         } catch (RuntimeException e ){
             return ResponseEntity.internalServerError().build();
         }
     }
+
 }
+
+
+/**
+ *  - CRUD coroinhas: 
+ *      - CREATE
+ *      - READ 
+ *      - UPDATE 
+ *      - DELETE (desativar)
+ */

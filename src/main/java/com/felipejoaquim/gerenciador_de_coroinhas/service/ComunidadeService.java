@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.felipejoaquim.gerenciador_de_coroinhas.dto.ComunidadeDTO;
 import com.felipejoaquim.gerenciador_de_coroinhas.dto.PerfilFuncaoDTO;
+import com.felipejoaquim.gerenciador_de_coroinhas.dto.comunidade.ComunidadeUpdateRequestDTO;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Comunidade;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.PerfilFuncao;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Roles;
@@ -70,7 +72,7 @@ public class ComunidadeService {
                 return coroinhasDTO;
             }
             
-            return coroinhas;
+            return null;
         }
         throw new RuntimeException("Comunidade de ID = "+comunidade+" não encontrada!");
     }
@@ -85,6 +87,36 @@ public class ComunidadeService {
             return articuladores;
         }
         throw new RuntimeException("Comunidade de ID = "+comunidadeId+" não encontrada!");
+    }
+
+    public List<ComunidadeDTO> todasComunidadesDTO(){
+        List<ComunidadeDTO> comunidades = new ArrayList<>();
+        for (Comunidade comunidade: comunidadeRepository.findByAtivoTrue()) {
+            comunidades.add(new ComunidadeDTO(comunidade.getNome()));
+        }
+        return comunidades;
+    }
+
+    public boolean alterarComunidade(Integer id, ComunidadeUpdateRequestDTO comunidadeAlterada) {
+        try {
+            Comunidade comunidade = comunidadeRepository.findById(id).get();
+            comunidade.setNome(comunidadeAlterada.nome());
+            comunidadeRepository.save(comunidade);
+            return true;
+        } catch (RuntimeException e) {
+            return false;
+        }
+    }
+
+    public boolean desativar(Integer id) {
+        try {
+            Comunidade comunidade = comunidadeRepository.findById(id).get();
+            comunidade.setAtivo(false);
+            comunidadeRepository.save(comunidade);
+            return true;
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 
 }

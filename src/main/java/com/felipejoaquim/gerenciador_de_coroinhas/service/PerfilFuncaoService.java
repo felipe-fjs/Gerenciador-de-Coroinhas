@@ -72,6 +72,30 @@ public class PerfilFuncaoService {
         return coroinhasDTO;
     }
 
+    public List<PerfilFuncaoDTO> coroinhasdaComunidade(String comunidade){
+        Comunidade comunidad = comunidadeRepository.findByNome(comunidade).get();
+        List<PerfilFuncao> coroinhas =perfilFuncaoRepository
+                                                .findByComunidadeAndFuncaoAndAtivoTrue(comunidad, Roles.ROLE_COROINHA); 
+        if (coroinhas.isEmpty()) {
+            return null;
+        }
+
+        Map<Comunidade, List<PerfilFuncao>> coroinhasPorComunidade = new HashMap<>();
+        // fazer MAP para retornar ao front
+
+        List<PerfilFuncaoDTO> coroinhasDTO = new ArrayList<>();
+        for (PerfilFuncao perfilFuncao : coroinhas) {
+                coroinhasDTO.add(new PerfilFuncaoDTO(
+                                        perfilFuncao.getPerfil().getId(),
+                                        perfilFuncao.getFuncao(),
+                                        perfilFuncao.getComunidade().getNome(),
+                                        perfilFuncao.getAtivo()
+                                    ));
+        }
+
+        return coroinhasDTO;
+    }
+
     public Integer novoArticulador(Integer perfilId, Integer comunidadeId) {
         // cria um novo articulador para uma comunidade
         
