@@ -1,9 +1,11 @@
 package com.felipejoaquim.gerenciador_de_coroinhas.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 // import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.felipejoaquim.gerenciador_de_coroinhas.entity.UserDetailsImpl;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Usuario;
 import com.felipejoaquim.gerenciador_de_coroinhas.repository.UsuarioRepository;
 
@@ -59,5 +61,12 @@ public class UsuarioService {
 
     public Boolean usuarioAtivo(String email) {
         return usuarioRepository.existsByEmailAndAtivoTrue(email);
+    }
+
+    public UserDetailsImpl loadUserDetailsImpl(String email) {
+        if (this.emailCadastrado(email)) {
+            return new UserDetailsImpl(this.buscarPorEmail(email));
+        }
+        return null;
     }
 } 
