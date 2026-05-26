@@ -31,6 +31,20 @@ public class JwtService {
         }
     }
 
+    public String generateToken(String email) {
+
+        try {
+            return JWT.create()
+                        .withIssuer("gerenciador-de-coroinhas")
+                        .withSubject(email)
+                        .withExpiresAt(getExpiration())
+                        .sign(alg);
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Erro ao criar Token", e);
+        }
+    }
+
     public String getToken(HttpServletRequest request){
         String header = request.getHeader("Authorization");
         if (header == null) {
