@@ -1,6 +1,7 @@
 package com.felipejoaquim.gerenciador_de_coroinhas.entity;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Role;
 
@@ -22,7 +23,7 @@ public class Usuario implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private UUID id;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -37,28 +38,29 @@ public class Usuario implements Serializable {
     private Boolean verificado = false;
 
     @Enumerated(EnumType.STRING)
+    private Role funcao;
 
     public Usuario(){}
 
-    public Usuario(String id, String email, String senha, Roles funcao) {
+    public Usuario(UUID id, String email, String senha, Role funcao) {
         this.id = id;
         this.email = email;
         this.senha = senha;
         this.funcao = funcao;
     }
 
-    public Usuario(String id, String email, String senha, Perfil perfil) {
+    public Usuario(UUID id, String email, String senha, Perfil perfil) {
         this.id = id;
         this.email = email;
         this.senha = senha;
         this.perfil = perfil;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -102,9 +104,11 @@ public class Usuario implements Serializable {
         this.verificado = verificado;
     }
 
+    public Role getFuncao() {
         return funcao;
     }
 
+    public void setFuncao(Role funcao) {
         this.funcao = funcao;
     }
 
