@@ -42,15 +42,13 @@ public class Usuario implements Serializable {
 
     public Usuario(){}
 
-    public Usuario(UUID id, String email, String senha, Role funcao) {
-        this.id = id;
+    public Usuario(String email, String senha, Role funcao) {
         this.email = email;
         this.senha = senha;
         this.funcao = funcao;
     }
 
-    public Usuario(UUID id, String email, String senha, Perfil perfil) {
-        this.id = id;
+    public Usuario(String email, String senha, Perfil perfil) {
         this.email = email;
         this.senha = senha;
         this.perfil = perfil;
