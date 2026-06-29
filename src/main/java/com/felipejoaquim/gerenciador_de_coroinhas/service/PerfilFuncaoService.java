@@ -12,7 +12,7 @@ import com.felipejoaquim.gerenciador_de_coroinhas.dto.PerfilFuncaoDTO;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Comunidade;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Perfil;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.PerfilFuncao;
-import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Roles;
+import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Role;
 import com.felipejoaquim.gerenciador_de_coroinhas.repository.ComunidadeRepository;
 import com.felipejoaquim.gerenciador_de_coroinhas.repository.PerfilFuncaoRepository;
 import com.felipejoaquim.gerenciador_de_coroinhas.repository.PerfilRepository;
@@ -31,7 +31,7 @@ public class PerfilFuncaoService {
         Perfil perfil = perfilRepository.findById(perfilId).orElseThrow(() -> new RuntimeException());
         Comunidade comunidade = comunidadeRepository.findById(comunidadeId).orElseThrow(() -> new RuntimeException());
 
-        return perfilFuncaoRepository.existsByPerfilAndComunidadeAndFuncao(perfil, comunidade, Roles.ROLE_COROINHA);
+        return perfilFuncaoRepository.existsByPerfilAndComunidadeAndFuncao(perfil, comunidade, Role.ROLE_COROINHA);
     }
 
     // a criação de um novo coroinha sem conta existente terá uma função específica, resolver mais pra frente a lógica
@@ -40,7 +40,7 @@ public class PerfilFuncaoService {
         try {
             Perfil perfil = perfilRepository.findById(perfilId).orElseThrow(() -> new RuntimeException());
             Comunidade comunidade = comunidadeRepository.findById(comunidadeId).orElseThrow(() -> new RuntimeException());
-            PerfilFuncao novoCoroinha = new PerfilFuncao(null, perfil, comunidade, Roles.ROLE_COROINHA);
+            PerfilFuncao novoCoroinha = new PerfilFuncao(null, perfil, comunidade, Role.ROLE_COROINHA);
 
             Integer coroinhaId = perfilFuncaoRepository.save(novoCoroinha).getId();
             return coroinhaId;
@@ -51,7 +51,7 @@ public class PerfilFuncaoService {
 
     public List<PerfilFuncaoDTO> todosCoroinhas(){
         List<PerfilFuncao> coroinhas =perfilFuncaoRepository
-                                                .findByFuncaoAndAtivoTrue(Roles.ROLE_COROINHA); 
+                                                .findByFuncaoAndAtivoTrue(Role.ROLE_COROINHA); 
         if (coroinhas.isEmpty()) {
             return null;
         }
@@ -75,7 +75,7 @@ public class PerfilFuncaoService {
     public List<PerfilFuncaoDTO> coroinhasdaComunidade(String comunidade){
         Comunidade comunidad = comunidadeRepository.findByNome(comunidade).get();
         List<PerfilFuncao> coroinhas =perfilFuncaoRepository
-                                                .findByComunidadeAndFuncaoAndAtivoTrue(comunidad, Roles.ROLE_COROINHA); 
+                                                .findByComunidadeAndFuncaoAndAtivoTrue(comunidad, Role.ROLE_COROINHA); 
         if (coroinhas.isEmpty()) {
             return null;
         }
@@ -122,7 +122,7 @@ public class PerfilFuncaoService {
 
     }
 
-    public Boolean perfilTemFuncaoAtiva(Integer perfilId, Roles funcao) {
+    public Boolean perfilTemFuncaoAtiva(Integer perfilId, Role funcao) {
         // verificar se registro existe e se está ativo
         return null;
     }

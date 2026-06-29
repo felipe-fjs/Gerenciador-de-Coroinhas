@@ -11,7 +11,7 @@ import com.felipejoaquim.gerenciador_de_coroinhas.dto.PerfilFuncaoDTO;
 import com.felipejoaquim.gerenciador_de_coroinhas.dto.comunidade.ComunidadeUpdateRequestDTO;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Comunidade;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.PerfilFuncao;
-import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Roles;
+import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Role;
 import com.felipejoaquim.gerenciador_de_coroinhas.repository.ComunidadeRepository;
 import com.felipejoaquim.gerenciador_de_coroinhas.repository.PerfilFuncaoRepository;
 
@@ -47,7 +47,7 @@ public class ComunidadeService {
         if (comunidadeRepository.existsById(comunidadeId)){
             Comunidade comunidade = comunidadeRepository.findById(comunidadeId).get();
 
-            List<PerfilFuncao> coroinhas =  perfilFuncaoRepository.findByComunidadeAndFuncaoAndAtivoTrue(comunidade, Roles.ROLE_COROINHA);
+            List<PerfilFuncao> coroinhas =  perfilFuncaoRepository.findByComunidadeAndFuncaoAndAtivoTrue(comunidade, Role.ROLE_COROINHA);
 
             return coroinhas;
         }
@@ -58,7 +58,7 @@ public class ComunidadeService {
         if (comunidadeRepository.existsByNome(comunidade)){
             Comunidade comunidad = comunidadeRepository.findByNome(comunidade).get();
 
-            List<PerfilFuncao> coroinhas =  perfilFuncaoRepository.findByComunidadeAndFuncaoAndAtivoTrue(comunidad, Roles.ROLE_COROINHA);
+            List<PerfilFuncao> coroinhas =  perfilFuncaoRepository.findByComunidadeAndFuncaoAndAtivoTrue(comunidad, Role.ROLE_COROINHA);
             if (!coroinhas.isEmpty()) {
                 List<PerfilFuncaoDTO> coroinhasDTO = new ArrayList<>();
                 for (PerfilFuncao perfilFuncao : coroinhas) {
@@ -82,7 +82,7 @@ public class ComunidadeService {
         if (comunidadeRepository.existsById(comunidadeId)){
             Comunidade comunidade = comunidadeRepository.findById(comunidadeId).get();
 
-            List<PerfilFuncao> articuladores =  perfilFuncaoRepository.findByComunidadeAndFuncaoAndAtivoTrue(comunidade, Roles.ROLE_ARTICULADOR);
+            List<PerfilFuncao> articuladores =  perfilFuncaoRepository.findByComunidadeAndFuncaoAndAtivoTrue(comunidade, Role.ROLE_ARTICULADOR);
 
             return articuladores;
         }

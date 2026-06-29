@@ -2,7 +2,7 @@ package com.felipejoaquim.gerenciador_de_coroinhas.entity;
 
 import java.io.Serializable;
 
-import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Roles;
+import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,7 +37,6 @@ public class Usuario implements Serializable {
     private Boolean verificado = false;
 
     @Enumerated(EnumType.STRING)
-    private Roles funcao;
 
     public Usuario(){}
 
@@ -103,11 +102,9 @@ public class Usuario implements Serializable {
         this.verificado = verificado;
     }
 
-    public Roles getFuncao() {
         return funcao;
     }
 
-    public void setFuncao(Roles funcao) {
         this.funcao = funcao;
     }
 
