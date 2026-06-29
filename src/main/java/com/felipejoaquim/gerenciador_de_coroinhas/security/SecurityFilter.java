@@ -2,14 +2,12 @@ package com.felipejoaquim.gerenciador_de_coroinhas.security;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import com.felipejoaquim.gerenciador_de_coroinhas.service.UsuarioService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,18 +16,23 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
-    @Autowired
     private JwtService jwtService;
-    @Autowired
-    private UsuarioService usuarioService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
+
+    public SecurityFilter(JwtService jwtService, UserDetailsServiceImpl userDetailsServiceImpl){
+        this.jwtService = jwtService;
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
+    }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                    @NonNull HttpServletResponse response, 
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+
                 String token = jwtService.getToken(request);
                 if (token != null) {
                     String email = jwtService.getEmail(token);
-                    UserDetails user = usuarioService.loadUserDetailsImpl(email);
+                    UserDetails user = userDetailsServiceImpl.loadUserDetailsImpl(email);
                     var authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                     

@@ -10,6 +10,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Usuario;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
@@ -46,12 +47,16 @@ public class JwtService {
     }
 
     public String getToken(HttpServletRequest request){
-        String header = request.getHeader("Authorization");
-        if (header == null) {
-            return null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("jwt")) {
+                    return cookie.getValue();
+                }
+            }
         }
-        String token = header.replace("Bearer ", "");
-        return token;
+        
+        return null;
     }
 
     public String getEmail(String token){

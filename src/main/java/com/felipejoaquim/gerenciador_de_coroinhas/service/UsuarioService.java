@@ -63,11 +63,4 @@ public class UsuarioService {
     public Boolean usuarioAtivo(String email) {
         return usuarioRepository.existsByEmailAndAtivoTrue(email);
     }
-
-    public UserDetailsImpl loadUserDetailsImpl(String email) {
-        if (this.emailCadastrado(email)) {
-            return new UserDetailsImpl(this.buscarPorEmail(email));
-        }
-        return null;
-    }
 } 
