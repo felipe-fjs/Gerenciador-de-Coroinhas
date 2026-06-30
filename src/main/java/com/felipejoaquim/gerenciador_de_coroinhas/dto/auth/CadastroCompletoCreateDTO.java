@@ -1,4 +1,4 @@
-package com.felipejoaquim.gerenciador_de_coroinhas.dto;
+package com.felipejoaquim.gerenciador_de_coroinhas.dto.auth;
 
 import java.time.LocalDate;
 

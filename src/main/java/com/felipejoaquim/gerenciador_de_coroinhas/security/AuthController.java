@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.felipejoaquim.gerenciador_de_coroinhas.dto.CadastroUsuarioDTO;
-import com.felipejoaquim.gerenciador_de_coroinhas.dto.LoginDTO;
-import com.felipejoaquim.gerenciador_de_coroinhas.dto.LoginResponseDTO;
+import com.felipejoaquim.gerenciador_de_coroinhas.dto.auth.LoginRequestDTO;
+import com.felipejoaquim.gerenciador_de_coroinhas.dto.auth.LoginResponseDTO;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Usuario;
 import com.felipejoaquim.gerenciador_de_coroinhas.service.UsuarioService;
 
@@ -31,7 +31,7 @@ public class AuthController {
     private JwtService jwtService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login (@RequestBody LoginDTO body) {
+    public ResponseEntity<LoginResponseDTO> login (@RequestBody LoginRequestDTO body) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(body.email(), body.senha());
         Authentication auth = authManager.authenticate(usernamePassword);
         
@@ -57,7 +57,7 @@ public class AuthController {
     @PostMapping("/registro")
     public ResponseEntity<?> registro (@RequestBody CadastroUsuarioDTO body) {
         if (!usuarioService.emailCadastrado(body.email())) {
-            Usuario novo_usuario = new Usuario(null, body.email(), body.senha(), body.funcao());
+            Usuario novo_usuario = new Usuario(body.email(), body.senha(), body.funcao());
             usuarioService.novoUsuario(novo_usuario);
             return ResponseEntity.status(HttpStatus.CREATED).body("Usuario criado com sucesso!");
 
