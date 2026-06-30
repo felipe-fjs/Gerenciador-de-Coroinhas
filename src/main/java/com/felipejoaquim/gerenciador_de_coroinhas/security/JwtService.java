@@ -8,67 +8,66 @@ import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Usuario;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class JwtService {
-    private String secret = "asdhbahsbdhias-asdjbajdbaosdjba-khqeojb12398&@*31yna";
-    private Algorithm alg = Algorithm.HMAC256(this.secret);
+    private final String secret = "asdhbahsbdhias-asdjbajdbaosdjba-khqeojb12398&@*31yna";
+    private final String ISSUER = "gerenciador-de-coroinhas";
+
+    private Algorithm getAlgorithm(){
+        return Algorithm.HMAC256(this.secret);
+    }
 
     public String generateToken(Usuario usuario) {
 
         try {
             return JWT.create()
-                        .withIssuer("gerenciador-de-coroinhas")
+                        .withIssuer(ISSUER)
                         .withSubject(usuario.getEmail())
                         .withExpiresAt(getExpiration())
-                        .sign(alg);
+                        .sign(getAlgorithm());
 
         } catch (RuntimeException e) {
-            throw new RuntimeException("Erro ao criar Token", e);
-        }
-    }
-
-    public String generateToken(String email) {
-
-        try {
-            return JWT.create()
-                        .withIssuer("gerenciador-de-coroinhas")
-                        .withSubject(email)
-                        .withExpiresAt(getExpiration())
-                        .sign(alg);
-
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Erro ao criar Token", e);
+            throw new RuntimeException("Erro ao criar Token: ", e);
         }
     }
 
     public String getToken(HttpServletRequest request){
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("jwt")) {
-                    return cookie.getValue();
-                }
-            }
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader == null) {
+            return null;
         }
-        
-        return null;
+
+        if (!authHeader.startsWith("Bearer")) {
+            return null;
+        }
+
+        return authHeader.split(" ")[1];
     }
 
     public String getEmail(String token){
         try {
-            return JWT.require(this.alg)
-                        .withIssuer("gerenciador-de-coroinhas")
+            return JWT.require(getAlgorithm())
+                        .withIssuer(ISSUER)
                         .build()
-                        .verify(token)
-                        .getSubject();
+                        .verify(token).getSubject();
 
         } catch (RuntimeException e) {
             return "";
+        }
+    }
+
+    public boolean isValidToken(String token) {
+        try {
+            JWT.require(getAlgorithm()).withIssuer(ISSUER).build().verify(token);
+            return true;
+        } catch (JWTVerificationException e) {
+            return false;
         }
     }
 
