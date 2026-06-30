@@ -1,6 +1,5 @@
 package com.felipejoaquim.gerenciador_de_coroinhas.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -23,12 +22,15 @@ import com.felipejoaquim.gerenciador_de_coroinhas.service.UsuarioService;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    @Autowired
     private UsuarioService usuarioService;
-    @Autowired
     private AuthenticationManager authManager;
-    @Autowired
     private JwtService jwtService;
+
+    public AuthController(UsuarioService usuarioService, AuthenticationManager authManager, JwtService jwtService) {
+        this.usuarioService = usuarioService;
+        this.authManager = authManager;
+        this.jwtService = jwtService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login (@RequestBody LoginRequestDTO body) {
@@ -39,7 +41,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponseDTO("EMAIL/USUARIO OU SENHA INVALIDOS"));
         }
 
-        String token = jwtService.generateToken(body.email());
+        String token = jwtService.generateToken((Usuario) auth.getPrincipal());
         
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                                                 .httpOnly(true)
