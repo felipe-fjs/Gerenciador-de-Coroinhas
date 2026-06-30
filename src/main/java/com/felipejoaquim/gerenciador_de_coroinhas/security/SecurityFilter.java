@@ -32,7 +32,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 String token = jwtService.getToken(request);
                 if (token != null) {
                     String email = jwtService.getEmail(token);
-                    UserDetails user = userDetailsServiceImpl.loadUserDetailsImpl(email);
+                    UserDetails user = userDetailsServiceImpl.loadUserByUsername(email);
                     var authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                     
