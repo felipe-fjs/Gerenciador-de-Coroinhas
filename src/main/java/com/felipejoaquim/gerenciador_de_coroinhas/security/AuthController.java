@@ -59,8 +59,7 @@ public class AuthController {
     @PostMapping("/registro")
     public ResponseEntity<?> registro (@RequestBody CadastroUsuarioDTO body) {
         if (!usuarioService.emailCadastrado(body.email())) {
-            Usuario novo_usuario = new Usuario(body.email(), body.senha(), body.funcao());
-            usuarioService.novoUsuario(novo_usuario);
+            UUID usuarioID = usuarioService.novoUsuario(body);
             return ResponseEntity.status(HttpStatus.CREATED).body("Usuario criado com sucesso!");
 
         }

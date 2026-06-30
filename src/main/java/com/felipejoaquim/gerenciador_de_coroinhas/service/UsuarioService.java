@@ -1,35 +1,39 @@
 package com.felipejoaquim.gerenciador_de_coroinhas.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.UUID;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 // import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.felipejoaquim.gerenciador_de_coroinhas.dto.CadastroUsuarioDTO;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.UserDetailsImpl;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Usuario;
+import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Role;
 import com.felipejoaquim.gerenciador_de_coroinhas.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
-    @Autowired
     private UsuarioRepository usuarioRepository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+        this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public Usuario buscarPorEmail(String email) {
         return usuarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Usuário não encontrado! - UsuarioService"));
     }
 
-    public String novoUsuario(Usuario usuario) {
-        if (!this.emailCadastrado(usuario.getEmail())) {
+    public UUID novoUsuario(CadastroUsuarioDTO usuario) {
+        if (!this.emailCadastrado(usuario.email())) {
             try {
-
-                String senhaCriptograda = passwordEncoder.encode(usuario.getSenha()); // criptografar
-                usuario.setSenha(senhaCriptograda);
-                usuario.setSenha(usuario.getSenha());
-                usuario.setPerfil(null);
-                String id = usuarioRepository.save(usuario).getId();
+                String senhaCriptograda = passwordEncoder.encode(usuario.senha()); 
+                Usuario novoUsuario = new Usuario(usuario.email(), senhaCriptograda, Role.COROINHA);
+                novoUsuario.setPerfil(null);
+                UUID id = usuarioRepository.save(novoUsuario).getId();
                 return id;
             } catch (RuntimeException e) {
                 throw new RuntimeException("Erro ao registrar novo usuário - UsuarioService : \n " + e);
@@ -42,7 +46,7 @@ public class UsuarioService {
         // instanciar posteriormente (verificação talvez?)
     }
 
-    public void desativarUsuario(String usuarioId) {
+    public void desativarUsuario(UUID usuarioId) {
         if (usuarioRepository.existsById(usuarioId)) {
             Usuario usuario = usuarioRepository.findById(usuarioId).get();
             usuario.setAtivo(false);
@@ -61,6 +65,6 @@ public class UsuarioService {
     }
 
     public Boolean usuarioAtivo(String email) {
-        return usuarioRepository.existsByEmailAndAtivoTrue(email);
+        return usuarioRepository.existsByEmail(email);
     }
 } 
