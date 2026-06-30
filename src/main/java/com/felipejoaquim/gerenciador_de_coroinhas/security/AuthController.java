@@ -38,21 +38,12 @@ public class AuthController {
         Authentication auth = authManager.authenticate(usernamePassword);
         
         if (!auth.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponseDTO("EMAIL/USUARIO OU SENHA INVALIDOS"));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new LoginResponseDTO("EMAIL/USUARIO OU SENHA INVALIDOS"));
         }
-
-        String token = jwtService.generateToken((Usuario) auth.getPrincipal());
+        UserDetailsImpl usuario = (UserDetailsImpl) auth.getPrincipal();
+        String token = jwtService.generateToken(usuario.getUsuario());
         
-        ResponseCookie cookie = ResponseCookie.from("jwt", token)
-                                                .httpOnly(true)
-                                                .maxAge(86400)
-                                                .sameSite("Strict")
-                                                .path("/")
-                                                .build();
-
-
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                                .header(HttpHeaders.SET_COOKIE, cookie.toString())
                                 .body(new LoginResponseDTO(token));
     }
 
