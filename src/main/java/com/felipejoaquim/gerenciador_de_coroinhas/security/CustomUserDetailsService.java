@@ -11,10 +11,10 @@ import com.felipejoaquim.gerenciador_de_coroinhas.repository.UsuarioRepository;
 
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService{
+public class CustomUserDetailsService implements UserDetailsService{
     private final UsuarioRepository usuarioRepository;
 
-    UserDetailsServiceImpl(UsuarioRepository usuarioRepository) {
+    CustomUserDetailsService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
     

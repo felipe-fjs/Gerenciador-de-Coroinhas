@@ -1,6 +1,6 @@
 package com.felipejoaquim.gerenciador_de_coroinhas.config;
 
-import com.felipejoaquim.gerenciador_de_coroinhas.security.SecurityFilter;
+import com.felipejoaquim.gerenciador_de_coroinhas.security.JwtAuthenticationFilter;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,9 +21,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfiguration {
     private CorsConfigurationSource corsConfigurationSource;
-    private SecurityFilter securityFilter;
+    private JwtAuthenticationFilter securityFilter;
 
-    public SecurityConfiguration(CorsConfigurationSource corsConfigurationSource, SecurityFilter securityFilter) {
+    public SecurityConfiguration(CorsConfigurationSource corsConfigurationSource, JwtAuthenticationFilter securityFilter) {
         this.corsConfigurationSource = corsConfigurationSource;
         this.securityFilter = securityFilter;
     }

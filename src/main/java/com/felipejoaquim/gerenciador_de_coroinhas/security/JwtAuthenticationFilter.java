@@ -15,11 +15,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class SecurityFilter extends OncePerRequestFilter {
-    private JwtService jwtService;
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private final JwtService jwtService;
+    private final CustomUserDetailsService userDetailsServiceImpl;
 
-    public SecurityFilter(JwtService jwtService, UserDetailsServiceImpl userDetailsServiceImpl){
+    public JwtAuthenticationFilter(JwtService jwtService, CustomUserDetailsService userDetailsServiceImpl){
         this.jwtService = jwtService;
         this.userDetailsServiceImpl = userDetailsServiceImpl;
     }
@@ -31,11 +31,15 @@ public class SecurityFilter extends OncePerRequestFilter {
 
                 String token = jwtService.getToken(request);
                 if (token != null) {
+                    
                     String email = jwtService.getEmail(token);
+                    
                     UserDetails user = userDetailsServiceImpl.loadUserByUsername(email);
                     var authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
                     
+                    if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }                    
                 }
                 filterChain.doFilter(request, response);
     }
