@@ -1,8 +1,8 @@
 package com.felipejoaquim.gerenciador_de_coroinhas.security;
 
-import org.springframework.http.HttpHeaders;
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.felipejoaquim.gerenciador_de_coroinhas.dto.CadastroUsuarioDTO;
 import com.felipejoaquim.gerenciador_de_coroinhas.dto.auth.LoginRequestDTO;
 import com.felipejoaquim.gerenciador_de_coroinhas.dto.auth.LoginResponseDTO;
-import com.felipejoaquim.gerenciador_de_coroinhas.entity.Usuario;
+import com.felipejoaquim.gerenciador_de_coroinhas.entity.UserDetailsImpl;
 import com.felipejoaquim.gerenciador_de_coroinhas.service.UsuarioService;
 
 
@@ -55,20 +55,6 @@ public class AuthController {
 
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Email já cadastrado!");
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout () {
-        ResponseCookie cookie = ResponseCookie.from("jwt", "")
-                                                .httpOnly(true)
-                                                .maxAge(0)
-                                                .sameSite("Strict")
-                                                .path("/")
-                                                .build();
-
-        return ResponseEntity.status(HttpStatus.ACCEPTED)
-                                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                                .body("Logout realizado com sucesso!");
     }
 
 }
