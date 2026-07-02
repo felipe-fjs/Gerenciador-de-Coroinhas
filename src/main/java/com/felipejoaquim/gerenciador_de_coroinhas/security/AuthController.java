@@ -36,10 +36,7 @@ public class AuthController {
     public ResponseEntity<LoginResponseDTO> login (@RequestBody LoginRequestDTO body) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(body.email(), body.senha());
         Authentication auth = authManager.authenticate(usernamePassword);
-        
-        if (!auth.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new LoginResponseDTO("EMAIL/USUARIO OU SENHA INVALIDOS"));
-        }
+
         UserDetailsImpl usuario = (UserDetailsImpl) auth.getPrincipal();
         String token = jwtService.generateToken(usuario.getUsuario());
         
@@ -49,12 +46,11 @@ public class AuthController {
 
     @PostMapping("/registro")
     public ResponseEntity<?> registro (@RequestBody CadastroUsuarioDTO body) {
-        if (!usuarioService.emailCadastrado(body.email())) {
-            UUID usuarioID = usuarioService.novoUsuario(body);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Usuario criado com sucesso!");
+        UUID usuarioID = usuarioService.novoUsuario(body);
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body("Usuario criado com sucesso!");
 
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Email já cadastrado!");
+        
     }
 
 }

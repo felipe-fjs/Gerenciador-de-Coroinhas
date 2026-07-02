@@ -2,15 +2,15 @@ package com.felipejoaquim.gerenciador_de_coroinhas.service;
 
 import java.util.UUID;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-// import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.felipejoaquim.gerenciador_de_coroinhas.dto.CadastroUsuarioDTO;
-import com.felipejoaquim.gerenciador_de_coroinhas.entity.UserDetailsImpl;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.Usuario;
 import com.felipejoaquim.gerenciador_de_coroinhas.entity.enums.Role;
+import com.felipejoaquim.gerenciador_de_coroinhas.exception.EmailJaCadastradoException;
+import com.felipejoaquim.gerenciador_de_coroinhas.exception.EmailNaoEncontradoException;
+import com.felipejoaquim.gerenciador_de_coroinhas.exception.UsuarioNaoEncontradoException;
 import com.felipejoaquim.gerenciador_de_coroinhas.repository.UsuarioRepository;
 
 @Service
@@ -24,7 +24,7 @@ public class UsuarioService {
     }
 
     public Usuario buscarPorEmail(String email) {
-        return usuarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Usuário não encontrado! - UsuarioService"));
+        return usuarioRepository.findByEmail(email).orElseThrow(() -> new EmailNaoEncontradoException("Usuário não encontrado! - UsuarioService"));
     }
 
     public UUID novoUsuario(CadastroUsuarioDTO usuario) {
@@ -39,7 +39,7 @@ public class UsuarioService {
                 throw new RuntimeException("Erro ao registrar novo usuário - UsuarioService : \n " + e);
             }
         }
-        throw new RuntimeException("Usuário já cadastrado - UsuarioService");
+        throw new EmailJaCadastradoException("Usuário já cadastrado - UsuarioService");
     }
 
     public void editarUsuario(String usuarioId, Usuario usuarioAtualizado) {
@@ -57,7 +57,7 @@ public class UsuarioService {
             }
         }
 
-        throw new RuntimeException("Erro ao verificar existencia de um usuário - UsuarioService");
+        throw new UsuarioNaoEncontradoException("Erro ao verificar existencia de um usuário - UsuarioService");
     }
 
     public Boolean emailCadastrado(String email){ 
