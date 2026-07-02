@@ -29,9 +29,10 @@ public class GlobalExceptionHandler {
             return ResponseEntity.status(status).body(error);
     }
 
+    // USUARIO EXCEPTIONS
     @ExceptionHandler(EmailJaCadastradoException.class) 
     public ResponseEntity<ErrorResponse> handleEmailJaCadastradoException(
-        BadCredentialsException exception, 
+        EmailJaCadastradoException exception, 
         HttpServletRequest request)
     {
             HttpStatus status = HttpStatus.CONFLICT;
@@ -45,8 +46,33 @@ public class GlobalExceptionHandler {
             return ResponseEntity.status(status).body(error);
     }
 
-    @ExceptionHandler()
-    public ResponseEntity<?> algo(){
-        return null;
+    @ExceptionHandler(EmailNaoEncontradoException.class)
+    public ResponseEntity<ErrorResponse> handleEmailNaoEncontradoException(EmailNaoEncontradoException exception, 
+        HttpServletRequest request)
+        {
+            HttpStatus status = HttpStatus.NOT_FOUND;
+            ErrorResponse error = new ErrorResponse(
+                    status, 
+                    LocalDateTime.now(), 
+                    "Email não encontrado", 
+                    status.name(), 
+                    request.getRequestURI()
+            );
+            return ResponseEntity.status(status).body(error);
     }
+
+    @ExceptionHandler(UsuarioNaoEncontradoException.class)
+    public ResponseEntity<ErrorResponse> handleUsuarioNaoEncontradoException(UsuarioNaoEncontradoException exception, 
+        HttpServletRequest request) {
+            HttpStatus status = HttpStatus.NOT_FOUND;
+            ErrorResponse error = new ErrorResponse(
+                status, 
+                LocalDateTime.now(), 
+                "Usuário não encontrado", 
+                status.name(), 
+                request.getRequestURI());
+            return ResponseEntity.status(status).body(error);
+        }
+
+    
 }
