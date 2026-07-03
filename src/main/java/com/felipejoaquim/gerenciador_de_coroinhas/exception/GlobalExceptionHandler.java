@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
         {
             HttpStatus status = HttpStatus.UNAUTHORIZED;
             ErrorResponse error = new ErrorResponse(
-                status,
+                status.value(),
                 LocalDateTime.now(), 
                 "Email ou Senha Incorretos!", 
                 status.name(), 
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
     {
             HttpStatus status = HttpStatus.CONFLICT;
             ErrorResponse error = new ErrorResponse(
-                status,
+                status.value(),
                 LocalDateTime.now(), 
                 "Email já registrado!", 
                 status.name(), 
@@ -52,11 +52,11 @@ public class GlobalExceptionHandler {
         {
             HttpStatus status = HttpStatus.NOT_FOUND;
             ErrorResponse error = new ErrorResponse(
-                    status, 
                     LocalDateTime.now(), 
                     "Email não encontrado", 
                     status.name(), 
                     request.getRequestURI()
+                status.value(),
             );
             return ResponseEntity.status(status).body(error);
     }
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
         HttpServletRequest request) {
             HttpStatus status = HttpStatus.NOT_FOUND;
             ErrorResponse error = new ErrorResponse(
-                status, 
+                status.value(),
                 LocalDateTime.now(), 
                 "Usuário não encontrado", 
                 status.name(), 
