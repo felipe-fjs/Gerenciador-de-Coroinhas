@@ -22,8 +22,8 @@ public class GlobalExceptionHandler {
             ErrorResponse error = new ErrorResponse(
                 status.value(),
                 LocalDateTime.now(), 
-                "Email ou Senha Incorretos!", 
-                status.name(), 
+                exception.getMessage(), 
+                status.getReasonPhrase(), 
                 request.getRequestURI());
 
             return ResponseEntity.status(status).body(error);
@@ -39,8 +39,8 @@ public class GlobalExceptionHandler {
             ErrorResponse error = new ErrorResponse(
                 status.value(),
                 LocalDateTime.now(), 
-                "Email já registrado!", 
-                status.name(), 
+                exception.getMessage(), 
+                status.getReasonPhrase(), 
                 request.getRequestURI());
 
             return ResponseEntity.status(status).body(error);
@@ -52,11 +52,11 @@ public class GlobalExceptionHandler {
         {
             HttpStatus status = HttpStatus.NOT_FOUND;
             ErrorResponse error = new ErrorResponse(
-                    LocalDateTime.now(), 
-                    "Email não encontrado", 
-                    status.name(), 
-                    request.getRequestURI()
                 status.value(),
+                LocalDateTime.now(), 
+                exception.getMessage(), 
+                status.getReasonPhrase(), 
+                request.getRequestURI()
             );
             return ResponseEntity.status(status).body(error);
     }
@@ -68,8 +68,8 @@ public class GlobalExceptionHandler {
             ErrorResponse error = new ErrorResponse(
                 status.value(),
                 LocalDateTime.now(), 
-                "Usuário não encontrado", 
-                status.name(), 
+                exception.getMessage(), 
+                status.getReasonPhrase(), 
                 request.getRequestURI());
             return ResponseEntity.status(status).body(error);
         }
